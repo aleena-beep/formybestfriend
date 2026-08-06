@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Favourite Person ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f6eee7;
+    font-family:Georgia, serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#4d3a34;
+}
+
+.container{
+    text-align:center;
+    max-width:700px;
+    padding:30px;
+}
+
+h1{
+    font-size:3rem;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    margin-bottom:40px;
+    color:#8b6f65;
+    font-style:italic;
+}
+
+.player{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.vinyl{
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:
+    radial-gradient(circle at center,
+    #f6eee7 0%,
+    #f6eee7 12%,
+    #d4b5a5 13%,
+    #d4b5a5 20%,
+    #1f1f1f 21%,
+    #0f0f0f 100%);
+    position:relative;
+    margin-bottom:30px;
+}
+
+.vinyl::after{
+    content:'';
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:#f6eee7;
+    border-radius:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.spin{
+    animation:rotate 4s linear infinite;
+}
+
+@keyframes rotate{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+button{
+    background:#d4b5a5;
+    border:none;
+    padding:14px 34px;
+    border-radius:40px;
+    cursor:pointer;
+    font-size:1rem;
+    color:white;
+    transition:.3s;
+}
+
+button:hover{
+    background:#c39f8e;
+}
+
+.lyrics{
+    margin-top:50px;
+    min-height:120px;
+    font-size:1.4rem;
+    line-height:1.8;
+    opacity:0;
+    transition:1s;
+}
+
+.show{
+    opacity:1;
+}
+
+.footer{
+    margin-top:50px;
+    color:#9c8177;
+    font-size:.9rem;
+}
+
+@media(max-width:600px){
+    h1{
+        font-size:2rem;
+    }
+
+    .vinyl{
+        width:220px;
+        height:220px;
+    }
+
+    .lyrics{
+        font-size:1.1rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>For My Best Friend ❤️</h1>
+
+<p class="subtitle">
+A little corner of the internet made just for you.
+</p>
+
+<div class="player">
+
+<div class="vinyl" id="vinyl"></div>
+
+<button id="playBtn">▶ Play</button>
+
+<audio id="audio">
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="lyrics" id="lyrics"></div>
+
+</div>
+
+<div class="footer">
+Made with love ✨
+</div>
+
+</div>
+
+<script>
+
+const audio = document.getElementById("audio");
+const vinyl = document.getElementById("vinyl");
+const button = document.getElementById("playBtn");
+const lyrics = document.getElementById("lyrics");
+
+let playing = false;
+
+button.addEventListener("click", () => {
+
+    if(!playing){
+        audio.play();
+        vinyl.classList.add("spin");
+        button.innerHTML = "⏸ Pause";
+        playing = true;
+    }else{
+        audio.pause();
+        vinyl.classList.remove("spin");
+        button.innerHTML = "▶ Play";
+        playing = false;
+    }
+
+});
+
+const lyricTimeline = [
+
+{
+time:5,
+text:"The skyline falls..."
+},
+
+{
+time:15,
+text:"✨ Thinking of you ✨"
+},
+
+{
+time:25,
+text:"❤️ Thank you for being my best friend ❤️"
+},
+
+{
+time:40,
+text:"🌙 Some friendships feel like home."
+}
+
+];
+
+audio.addEventListener("timeupdate", () => {
+
+    lyricTimeline.forEach(line => {
+
+        if(
+            audio.currentTime >= line.time &&
+            audio.currentTime < line.time + 5
+        ){
+            lyrics.textContent = line.text;
+            lyrics.classList.add("show");
+        }
+
+    });
+
+});
+
+audio.addEventListener("ended", () => {
+    vinyl.classList.remove("spin");
+    button.innerHTML = "▶ Play";
+    playing = false;
+});
+
+</script>
+
+</body>
+</html>
